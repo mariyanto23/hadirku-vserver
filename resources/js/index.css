@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern Minimalist School Attendance System Design */
+
+@layer base {
+  :root {
+    /* Primary - Deep Professional Blue */
+    --primary: 215 50% 23%;
+    --primary-foreground: 210 40% 98%;
+    
+    /* Background - Soft Gray */
+    --background: 220 20% 97%;
+    --foreground: 215 25% 15%;
+    
+    /* Cards - Clean White */
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+    
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+    
+    /* Secondary - Light Blue Gray */
+    --secondary: 215 20% 93%;
+    --secondary-foreground: 215 50% 23%;
+    
+    /* Muted */
+    --muted: 220 15% 92%;
+    --muted-foreground: 215 15% 45%;
+    
+    /* Accent - Teal for highlights */
+    --accent: 180 45% 45%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Success - Green */
+    --success: 152 55% 42%;
+    --success-foreground: 0 0% 100%;
+    
+    /* Warning - Amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders */
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 215 50% 23%;
+    
+    --radius: 0.75rem;
+    
+    /* Camera focus ring */
+    --camera-ring: 180 100% 50%;
+    --camera-pulse: 180 80% 60%;
+    
+    /* Sidebar */
+    --sidebar-background: 215 50% 18%;
+    --sidebar-foreground: 210 40% 95%;
+    --sidebar-primary: 180 45% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 45% 25%;
+    --sidebar-accent-foreground: 210 40% 95%;
+    --sidebar-border: 215 40% 25%;
+    --sidebar-ring: 180 45% 50%;
+  }
+
+  .dark {
+    --primary: 210 40% 98%;
+    --primary-foreground: 215 50% 23%;
+    --background: 215 35% 10%;
+    --foreground: 210 40% 95%;
+    --card: 215 35% 13%;
+    --card-foreground: 210 40% 95%;
+    --popover: 215 35% 13%;
+    --popover-foreground: 210 40% 95%;
+    --secondary: 215 30% 18%;
+    --secondary-foreground: 210 40% 95%;
+    --muted: 215 30% 18%;
+    --muted-foreground: 215 15% 55%;
+    --accent: 180 45% 45%;
+    --accent-foreground: 0 0% 100%;
+    --success: 152 55% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 30% 20%;
+    --input: 215 30% 20%;
+    --ring: 180 45% 50%;
+    --sidebar-background: 215 40% 8%;
+    --sidebar-foreground: 210 40% 95%;
+    --sidebar-primary: 180 45% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 35% 15%;
+    --sidebar-accent-foreground: 210 40% 95%;
+    --sidebar-border: 215 30% 15%;
+    --sidebar-ring: 180 45% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  /* Camera view styles */
+  .camera-container {
+    @apply relative overflow-hidden rounded-2xl bg-primary/5 border-2 border-dashed border-primary/20;
+  }
+  
+  .camera-active {
+    @apply border-solid border-accent;
+    animation: camera-activate 0.5s ease-out forwards;
+    box-shadow: 0 0 0 4px hsl(var(--camera-ring) / 0.15),
+                0 20px 40px -15px hsl(var(--primary) / 0.2);
+  }
+  
+  .face-detection-zone {
+    @apply absolute border-2 border-accent rounded-xl;
+    animation: pulse-ring 2s ease-in-out infinite;
+  }
+  
+  /* Status cards */
+  .status-success {
+    @apply bg-success/10 border-success/30 text-success;
+  }
+  
+  .status-warning {
+    @apply bg-warning/10 border-warning/30 text-warning;
+  }
+  
+  .status-error {
+    @apply bg-destructive/10 border-destructive/30 text-destructive;
+  }
+  
+  /* Glass effect cards */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm;
+  }
+}
+
+@layer utilities {
+  /* Smooth transitions */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  /* Focus ring for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+  }
+}
+
+/* Animations */
+@keyframes camera-activate {
+  0% {
+    box-shadow: 0 0 0 0px hsl(var(--camera-ring) / 0),
+                0 0 0 0 hsl(var(--primary) / 0);
+    transform: scale(0.98);
+  }
+  50% {
+    box-shadow: 0 0 0 8px hsl(var(--camera-ring) / 0.25),
+                0 25px 50px -15px hsl(var(--primary) / 0.3);
+    transform: scale(1.01);
+  }
+  100% {
+    box-shadow: 0 0 0 4px hsl(var(--camera-ring) / 0.15),
+                0 20px 40px -15px hsl(var(--primary) / 0.2);
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-ring {
+  0%, 100% {
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 8px hsl(var(--primary) / 0.1);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    top: 0%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+.animate-scan-line {
+  animation: scan-line 2s linear infinite;
+}
