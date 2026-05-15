@@ -70,31 +70,34 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: loginData, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
       if (error) throw error;
 
       // Get user ID from the active session directly
-      const { data: { session } } = await supabase.auth.getSession();
+      const session = loginData?.session ?? (await supabase.auth.getSession()).data.session;
       const userId = session?.user?.id;
+      let userRole = session?.user?.role;
 
       if (!userId) throw new Error("Sesi tidak ditemukan setelah login");
 
       // Fetch role using the confirmed user ID
-      const { data: roleData } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId)
-        .maybeSingle();
+      if (!userRole) {
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", userId)
+          .maybeSingle();
+        userRole = roleData?.role;
+      }
       
       toast({
         title: "Login Berhasil",
         description: `${welcomeMessage} di ${appTitle}`,
       });
 
-      const userRole = roleData?.role;
       if (userRole === "student") navigate("/student", { replace: true });
       else if (userRole === "parent") navigate("/parent", { replace: true });
       else if (userRole === "admin") navigate("/", { replace: true });

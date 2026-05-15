@@ -15,6 +15,19 @@ function unwrap(response: any) {
   return response?.data?.data ?? response?.data ?? null;
 }
 
+function makeSession(me: any) {
+  if (!me?.id) return null;
+
+  return {
+    user: {
+      id: me.id,
+      email: me.email,
+      role: me.role ?? null,
+    },
+    access_token: "cookie",
+  };
+}
+
 function tableEndpoint(table: string) {
   return {
     classes: "/classes",
@@ -326,7 +339,7 @@ export const supabase = {
       try {
         const res = await http.get("/auth/me");
         const me = unwrap(res);
-        return { data: { session: { user: { id: me.id, email: me.email }, access_token: "cookie" } }, error: null };
+        return { data: { session: makeSession(me) }, error: null };
       } catch {
         return { data: { session: null }, error: null };
       }
@@ -334,10 +347,12 @@ export const supabase = {
     async signInWithPassword(credentials: { email: string; password: string }) {
       try {
         await csrf();
-        await http.post("/auth/login", credentials);
-        return { error: null };
+        const res = await http.post("/auth/login", credentials);
+        const me = unwrap(res);
+        const session = makeSession(me);
+        return { data: { session, user: session?.user ?? null }, error: null };
       } catch (error: any) {
-        return { error: { message: error?.response?.data?.error?.message || error.message } };
+        return { data: null, error: { message: error?.response?.data?.error?.message || error.message } };
       }
     },
     async signOut() {
