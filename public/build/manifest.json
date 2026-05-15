@@ -1,0 +1,68 @@
+{
+  "_exceljs.min-DOIzRtnH.js": {
+    "file": "assets/exceljs.min-DOIzRtnH.js",
+    "name": "exceljs.min",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.tsx"
+    ]
+  },
+  "_jspdf.es.min-CfrnFuQn.js": {
+    "file": "assets/jspdf.es.min-CfrnFuQn.js",
+    "name": "jspdf.es.min",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.tsx"
+    ],
+    "dynamicImports": [
+      "node_modules/html2canvas/dist/html2canvas.esm.js",
+      "node_modules/dompurify/dist/purify.es.mjs",
+      "node_modules/canvg/lib/index.es.js"
+    ]
+  },
+  "node_modules/canvg/lib/index.es.js": {
+    "file": "assets/index.es-COTeeNUS.js",
+    "name": "index.es",
+    "src": "node_modules/canvg/lib/index.es.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/main.tsx",
+      "_jspdf.es.min-CfrnFuQn.js"
+    ]
+  },
+  "node_modules/dompurify/dist/purify.es.mjs": {
+    "file": "assets/purify.es-CLGrRn1w.js",
+    "name": "purify.es",
+    "src": "node_modules/dompurify/dist/purify.es.mjs",
+    "isDynamicEntry": true
+  },
+  "node_modules/html2canvas/dist/html2canvas.esm.js": {
+    "file": "assets/html2canvas.esm-CBrSDip1.js",
+    "name": "html2canvas.esm",
+    "src": "node_modules/html2canvas/dist/html2canvas.esm.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.mjs": {
+    "file": "assets/jspdf.plugin.autotable-81Htps2Y.js",
+    "name": "jspdf.plugin.autotable",
+    "src": "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.mjs",
+    "isDynamicEntry": true
+  },
+  "resources/js/main.tsx": {
+    "file": "assets/main-DazXxXV5.js",
+    "name": "main",
+    "src": "resources/js/main.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "_exceljs.min-DOIzRtnH.js",
+      "_jspdf.es.min-CfrnFuQn.js",
+      "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.mjs",
+      "_exceljs.min-DOIzRtnH.js",
+      "_jspdf.es.min-CfrnFuQn.js",
+      "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.mjs"
+    ],
+    "css": [
+      "assets/main-Bez5WyRG.css"
+    ]
+  }
+}
