@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -113,37 +112,10 @@ return new class extends Migration
             $table->unique(['parent_user_id', 'student_id']);
         });
 
-        if (DB::getDriverName() === 'mysql') {
-            DB::unprepared($this->syncEmbeddingTriggerSql('ins', 'AFTER INSERT'));
-            DB::unprepared($this->syncEmbeddingTriggerSql('del', 'AFTER DELETE'));
-            DB::unprepared(<<<'SQL'
-CREATE TRIGGER face_descriptors_before_insert_fifo
-BEFORE INSERT ON face_descriptors
-FOR EACH ROW
-BEGIN
-    DELETE FROM face_descriptors
-    WHERE student_id = NEW.student_id
-      AND id IN (
-        SELECT id FROM (
-          SELECT id FROM face_descriptors
-          WHERE student_id = NEW.student_id
-          ORDER BY created_at ASC
-          LIMIT 1 OFFSET 9
-        ) oldest
-      );
-END
-SQL);
-        }
     }
 
     public function down(): void
     {
-        if (DB::getDriverName() === 'mysql') {
-            DB::unprepared('DROP TRIGGER IF EXISTS face_descriptors_before_insert_fifo');
-            DB::unprepared('DROP TRIGGER IF EXISTS trg_sync_has_embedding_ins');
-            DB::unprepared('DROP TRIGGER IF EXISTS trg_sync_has_embedding_del');
-        }
-
         Schema::dropIfExists('parent_student_links');
         Schema::dropIfExists('student_user_links');
         Schema::dropIfExists('user_roles');
@@ -154,23 +126,5 @@ SQL);
         Schema::dropIfExists('face_descriptors');
         Schema::dropIfExists('students');
         Schema::dropIfExists('classes');
-    }
-
-    private function syncEmbeddingTriggerSql(string $suffix, string $timing): string
-    {
-        $row = $suffix === 'del' ? 'OLD' : 'NEW';
-
-        return <<<SQL
-CREATE TRIGGER trg_sync_has_embedding_{$suffix}
-{$timing} ON face_descriptors
-FOR EACH ROW
-BEGIN
-    UPDATE students
-    SET has_embedding = EXISTS (
-        SELECT 1 FROM face_descriptors WHERE student_id = {$row}.student_id
-    )
-    WHERE id = {$row}.student_id;
-END
-SQL;
     }
 };
